@@ -1,0 +1,25 @@
+# Rust
+/target/
+Cargo.lock
+**/*.rs.bk
+
+# Tauri
+/src-tauri/target/
+
+# Node
+node_modules/
+dist/
+.env.local
+
+# macOS
+.DS_Store
+*.swp
+*.swo
+
+# IDE
+.vscode/
+.idea/
+*.code-workspace
+
+# App data
+~/.pomodoro-biome/
