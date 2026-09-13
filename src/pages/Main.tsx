@@ -4,6 +4,7 @@ import { BiomeView } from "../components/BiomeView";
 import { BreakActions } from "../components/BreakActions";
 import { ProgressBar } from "../components/ProgressBar";
 import { getBiomeState, endSession, performAction } from "../lib/tauri-commands";
+import { isTauriRuntime } from "../lib/browser-mock-backend";
 import type { BiomeState } from "../lib/types";
 
 // Mirrors src-tauri/src/progression.rs::STAGE_THRESHOLDS
@@ -56,6 +57,9 @@ export function Main() {
 
   return (
     <div className="main">
+      {!isTauriRuntime() && (
+        <p className="preview-banner">Browser preview — progress here won't sync with the desktop app</p>
+      )}
       <BiomeView stage={biome.current_stage} />
       <ProgressBar
         current={biome.progress_points}

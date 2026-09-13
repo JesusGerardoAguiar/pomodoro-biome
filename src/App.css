@@ -16,6 +16,15 @@ body {
   box-sizing: border-box;
 }
 
+.preview-banner {
+  background: #4a3a1f;
+  color: #f2c94c;
+  font-size: 0.75rem;
+  padding: 0.4rem 0.8rem;
+  border-radius: 6px;
+  text-align: center;
+}
+
 .loading {
   display: flex;
   align-items: center;
