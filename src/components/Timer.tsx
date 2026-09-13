@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { formatTime } from "../lib/time";
+import { formatTime, secondsUntil } from "../lib/time";
 import { updateTrayTitle } from "../lib/tauri-commands";
 
 interface TimerProps {
@@ -13,26 +13,42 @@ export function Timer({ durationSeconds, isRunning, onToggle, onComplete }: Time
   const [remaining, setRemaining] = useState(durationSeconds);
   const onCompleteRef = useRef(onComplete);
   onCompleteRef.current = onComplete;
+  // Wall-clock timestamp the countdown should hit zero at. Anchoring to a
+  // fixed end time (rather than decrementing a counter per tick) means the
+  // displayed value is always correct even if setInterval ticks get
+  // throttled or skipped entirely while the window is minimized/unfocused.
+  const endTimeRef = useRef<number | null>(null);
 
   useEffect(() => {
     setRemaining(durationSeconds);
+    endTimeRef.current = null;
   }, [durationSeconds]);
 
   useEffect(() => {
-    if (!isRunning) return;
+    if (!isRunning) {
+      endTimeRef.current = null;
+      return;
+    }
 
-    const interval = setInterval(() => {
-      setRemaining((prev) => {
-        if (prev <= 1) {
-          clearInterval(interval);
-          onCompleteRef.current();
-          return 0;
-        }
-        return prev - 1;
-      });
-    }, 1000);
+    if (endTimeRef.current === null) {
+      endTimeRef.current = Date.now() + remaining * 1000;
+    }
+    const endTime = endTimeRef.current;
 
+    const tick = () => {
+      const secondsLeft = secondsUntil(endTime);
+      setRemaining(secondsLeft);
+      if (secondsLeft <= 0) {
+        clearInterval(interval);
+        endTimeRef.current = null;
+        onCompleteRef.current();
+      }
+    };
+
+    const interval = setInterval(tick, 1000);
+    tick();
     return () => clearInterval(interval);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isRunning]);
 
   useEffect(() => {
