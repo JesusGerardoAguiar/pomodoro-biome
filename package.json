@@ -1,7 +1,22 @@
 {
   "name": "pomodoro-biome",
-  "private": true,
   "version": "0.1.0",
+  "description": "A macOS Pomodoro timer where your focus sessions grow a living biome instead of just counting down",
+  "author": "Jesus Aguiar",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/JesusGerardoAguiar/pomodoro-biome.git"
+  },
+  "keywords": [
+    "pomodoro",
+    "timer",
+    "productivity",
+    "gamification",
+    "tauri",
+    "react",
+    "macos"
+  ],
   "type": "module",
   "scripts": {
     "dev": "vite",

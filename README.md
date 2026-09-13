@@ -73,4 +73,8 @@ See [`docs/superpowers/specs/2026-09-12-pomodoro-biome-design.md`](docs/superpow
 
 ## License
 
-Personal project — no license granted for reuse.
+MIT License — see [LICENSE](LICENSE) for details. Feel free to fork, modify, and use this project for your own purposes.
+
+## Contributing
+
+Contributions welcome! See [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines.
