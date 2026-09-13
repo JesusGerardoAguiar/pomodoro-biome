@@ -9,7 +9,7 @@ export function BiomeView({ stage }: BiomeViewProps) {
 
   return (
     <div className="biome-view" style={{ backgroundColor: info.color }}>
-      <span className="biome-emoji">{info.emoji}</span>
+      <img className="biome-sprite" src={info.image} alt={info.name} />
       <span className="biome-name">{info.name}</span>
     </div>
   );

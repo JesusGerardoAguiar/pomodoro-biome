@@ -35,8 +35,10 @@ body {
   transition: background-color 0.6s ease;
 }
 
-.biome-emoji {
-  font-size: 4rem;
+.biome-sprite {
+  width: 128px;
+  height: 128px;
+  image-rendering: pixelated;
 }
 
 .biome-name {
