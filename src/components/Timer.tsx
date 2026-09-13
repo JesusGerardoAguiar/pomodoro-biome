@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { formatTime } from "../lib/time";
+import { updateTrayTitle } from "../lib/tauri-commands";
 
 interface TimerProps {
   durationSeconds: number;
@@ -33,6 +34,16 @@ export function Timer({ durationSeconds, isRunning, onToggle, onComplete }: Time
 
     return () => clearInterval(interval);
   }, [isRunning]);
+
+  useEffect(() => {
+    updateTrayTitle(formatTime(remaining));
+  }, [remaining]);
+
+  useEffect(() => {
+    return () => {
+      updateTrayTitle(null);
+    };
+  }, []);
 
   return (
     <div className="timer">

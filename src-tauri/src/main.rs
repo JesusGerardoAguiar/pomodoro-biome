@@ -4,6 +4,7 @@ mod commands;
 mod game_state;
 mod persistence;
 mod progression;
+mod tray;
 
 use commands::AppState;
 use persistence::{data_file_path, load_state, save_state};
@@ -19,7 +20,12 @@ fn main() {
             commands::get_biome_state,
             commands::end_session,
             commands::perform_action,
+            tray::update_tray_title,
         ])
+        .setup(|app| {
+            tray::setup_tray(&app.handle())?;
+            Ok(())
+        })
         .on_window_event(|window, event| {
             if let tauri::WindowEvent::CloseRequested { .. } = event {
                 let state = window.state::<AppState>();

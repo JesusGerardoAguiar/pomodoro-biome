@@ -23,3 +23,8 @@ export function performAction(actionName: string): Promise<BiomeState> {
   if (!isTauriRuntime()) return mockPerformAction(actionName);
   return realInvoke("perform_action", { actionName });
 }
+
+export function updateTrayTitle(title: string | null): Promise<void> {
+  if (!isTauriRuntime()) return Promise.resolve();
+  return realInvoke("update_tray_title", { title });
+}
