@@ -1,10 +1,7 @@
+import { Main } from "./pages/Main";
+
 function App() {
-  return (
-    <div className="app">
-      <h1>Pomodoro Biome</h1>
-      <p>Scaffold running.</p>
-    </div>
-  );
+  return <Main />;
 }
 
 export default App;
