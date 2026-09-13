@@ -23,3 +23,6 @@ dist/
 
 # App data
 ~/.pomodoro-biome/
+
+# Generated icon source (regenerate via scripts/generate_app_icon.py)
+/scripts/app-icon-source.png
