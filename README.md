@@ -8,7 +8,7 @@ Work a 25-minute session, take a 5-minute break, and watch your biome in a jar e
 
 ## Why
 
-Existing Pomodoro + gamification apps (like Forest) are great, but this is a from-scratch, personal version with no subscription, running natively on macOS, and — eventually — a lot more depth: multiple biome types to unlock and small creatures that show up as the ecosystem matures.
+Existing Pomodoro + gamification apps are great, but this is a from-scratch, personal version with no subscription, running natively on macOS, and — eventually — a lot more depth: multiple biome types to unlock and small creatures that show up as the ecosystem matures.
 
 ## How it works
 
