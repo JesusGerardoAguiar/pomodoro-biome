@@ -34,7 +34,7 @@ mod tests {
     fn load_state_returns_default_when_file_missing() {
         let path = temp_path("missing");
         let state = load_state(&path);
-        assert_eq!(state.progress_points, 0);
+        assert_eq!(state.total_sessions, 0);
         assert_eq!(state.current_stage, 0);
     }
 
@@ -42,14 +42,12 @@ mod tests {
     fn save_then_load_round_trips_state() {
         let path = temp_path("roundtrip");
         let mut state = BiomeState::new();
-        state.progress_points = 12;
         state.current_stage = 2;
         state.total_sessions = 8;
 
         save_state(&path, &state).unwrap();
         let loaded = load_state(&path);
 
-        assert_eq!(loaded.progress_points, 12);
         assert_eq!(loaded.current_stage, 2);
         assert_eq!(loaded.total_sessions, 8);
 
@@ -62,7 +60,7 @@ mod tests {
         std::fs::write(&path, "not valid json{{{").unwrap();
 
         let state = load_state(&path);
-        assert_eq!(state.progress_points, 0);
+        assert_eq!(state.total_sessions, 0);
 
         std::fs::remove_file(&path).ok();
     }

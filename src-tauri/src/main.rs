@@ -19,7 +19,6 @@ fn main() {
         .invoke_handler(tauri::generate_handler![
             commands::get_biome_state,
             commands::end_session,
-            commands::perform_action,
             tray::update_tray_title,
         ])
         .setup(|app| {

@@ -1,14 +1,13 @@
 import { useEffect, useState } from "react";
 import { Timer } from "../components/Timer";
 import { BiomeView } from "../components/BiomeView";
-import { BreakActions } from "../components/BreakActions";
 import { ProgressBar } from "../components/ProgressBar";
-import { getBiomeState, endSession, performAction } from "../lib/tauri-commands";
+import { getBiomeState, endSession } from "../lib/tauri-commands";
 import { isTauriRuntime } from "../lib/browser-mock-backend";
 import type { BiomeState } from "../lib/types";
 
 // Mirrors src-tauri/src/progression.rs::STAGE_THRESHOLDS
-const STAGE_THRESHOLDS = [0, 5, 10, 15, 20, 25, 30];
+const STAGE_THRESHOLDS = [0, 3, 6, 9, 12, 15, 18];
 
 const SESSION_SECONDS = 25 * 60;
 const BREAK_SECONDS = 5 * 60;
@@ -50,11 +49,6 @@ export function Main() {
     setPhase("idle");
   }
 
-  async function handleAction(actionName: string) {
-    const updated = await performAction(actionName);
-    setBiome(updated);
-  }
-
   return (
     <div className="main">
       {!isTauriRuntime() && (
@@ -62,7 +56,7 @@ export function Main() {
       )}
       <BiomeView stage={biome.current_stage} />
       <ProgressBar
-        current={biome.progress_points}
+        current={biome.total_sessions}
         previousThreshold={previousThreshold}
         nextThreshold={nextThreshold}
       />
@@ -71,12 +65,15 @@ export function Main() {
       {phase === "idle" && <button onClick={handleStartWork}>Start Session</button>}
 
       {phase === "working" && (
-        <Timer
-          durationSeconds={SESSION_SECONDS}
-          isRunning={isRunning}
-          onToggle={() => setIsRunning((r) => !r)}
-          onComplete={handleWorkComplete}
-        />
+        <>
+          <h2>Focus Session</h2>
+          <Timer
+            durationSeconds={SESSION_SECONDS}
+            isRunning={isRunning}
+            onToggle={() => setIsRunning((r) => !r)}
+            onComplete={handleWorkComplete}
+          />
+        </>
       )}
 
       {phase === "break" && (
@@ -87,11 +84,6 @@ export function Main() {
             isRunning={isRunning}
             onToggle={() => setIsRunning((r) => !r)}
             onComplete={handleBreakComplete}
-          />
-          <BreakActions
-            unlockedActions={biome.unlocked_actions}
-            onAction={handleAction}
-            disabled={false}
           />
         </>
       )}

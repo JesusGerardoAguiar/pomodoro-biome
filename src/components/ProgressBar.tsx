@@ -13,7 +13,7 @@ export function ProgressBar({ current, previousThreshold, nextThreshold }: Progr
     <div className="progress-bar-track">
       <div className="progress-bar-fill" style={{ width: `${percent}%` }} />
       <span className="progress-bar-label">
-        {current} / {nextThreshold} points
+        {current} / {nextThreshold} pomodoros
       </span>
     </div>
   );

@@ -1,6 +1,9 @@
 import { useEffect, useRef, useState } from "react";
 import { formatTime, secondsUntil } from "../lib/time";
 import { updateTrayTitle } from "../lib/tauri-commands";
+import chimeSound from "../assets/sounds/chime.wav";
+
+const ALERT_SECONDS_BEFORE_END = 15;
 
 interface TimerProps {
   durationSeconds: number;
@@ -18,10 +21,12 @@ export function Timer({ durationSeconds, isRunning, onToggle, onComplete }: Time
   // displayed value is always correct even if setInterval ticks get
   // throttled or skipped entirely while the window is minimized/unfocused.
   const endTimeRef = useRef<number | null>(null);
+  const alertPlayedRef = useRef(false);
 
   useEffect(() => {
     setRemaining(durationSeconds);
     endTimeRef.current = null;
+    alertPlayedRef.current = false;
   }, [durationSeconds]);
 
   useEffect(() => {
@@ -38,6 +43,12 @@ export function Timer({ durationSeconds, isRunning, onToggle, onComplete }: Time
     const tick = () => {
       const secondsLeft = secondsUntil(endTime);
       setRemaining(secondsLeft);
+
+      if (secondsLeft <= ALERT_SECONDS_BEFORE_END && secondsLeft > 0 && !alertPlayedRef.current) {
+        alertPlayedRef.current = true;
+        new Audio(chimeSound).play().catch(() => {});
+      }
+
       if (secondsLeft <= 0) {
         clearInterval(interval);
         endTimeRef.current = null;

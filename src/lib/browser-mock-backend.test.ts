@@ -1,5 +1,5 @@
 import { describe, it, expect, beforeEach } from "vitest";
-import { mockGetBiomeState, mockEndSession, mockPerformAction } from "./browser-mock-backend";
+import { mockGetBiomeState, mockEndSession } from "./browser-mock-backend";
 
 // A minimal localStorage stand-in, since this suite runs under Vitest's
 // "node" environment (see vitest.config.ts) where localStorage isn't global.
@@ -24,34 +24,27 @@ describe("browser mock backend", () => {
   it("starts at stage 0 with no progress", async () => {
     const state = await mockGetBiomeState();
     expect(state.current_stage).toBe(0);
-    expect(state.progress_points).toBe(0);
+    expect(state.total_sessions).toBe(0);
   });
 
-  it("completing a session adds one point and records history", async () => {
+  it("completing a session increments total_sessions and records history", async () => {
     const state = await mockEndSession(25);
-    expect(state.progress_points).toBe(1);
     expect(state.total_sessions).toBe(1);
     expect(state.session_history).toHaveLength(1);
   });
 
-  it("reaching 5 points advances to stage 1 and unlocks plant_seed", async () => {
-    for (let i = 0; i < 5; i++) {
+  it("does not advance stage before 3 completed sessions", async () => {
+    await mockEndSession(25);
+    const state = await mockEndSession(25);
+    expect(state.total_sessions).toBe(2);
+    expect(state.current_stage).toBe(0);
+  });
+
+  it("reaching 3 completed sessions advances to stage 1", async () => {
+    for (let i = 0; i < 3; i++) {
       await mockEndSession(25);
     }
     const state = await mockGetBiomeState();
     expect(state.current_stage).toBe(1);
-    expect(state.unlocked_actions).toEqual(["plant_seed"]);
-  });
-
-  it("rejects a locked action", async () => {
-    await expect(mockPerformAction("water_plant")).rejects.toThrow();
-  });
-
-  it("applies an unlocked action's points", async () => {
-    for (let i = 0; i < 5; i++) {
-      await mockEndSession(25);
-    }
-    const state = await mockPerformAction("plant_seed");
-    expect(state.progress_points).toBe(7);
   });
 });

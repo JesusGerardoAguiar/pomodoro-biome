@@ -1,5 +1,5 @@
 import type { BiomeState } from "./types";
-import { isTauriRuntime, mockGetBiomeState, mockEndSession, mockPerformAction } from "./browser-mock-backend";
+import { isTauriRuntime, mockGetBiomeState, mockEndSession } from "./browser-mock-backend";
 
 // @tauri-apps/api/core has module-level side effects that assume a Tauri
 // environment, so it's only imported when actually running inside Tauri —
@@ -17,11 +17,6 @@ export function getBiomeState(): Promise<BiomeState> {
 export function endSession(durationMinutes: number): Promise<BiomeState> {
   if (!isTauriRuntime()) return mockEndSession(durationMinutes);
   return realInvoke("end_session", { durationMinutes });
-}
-
-export function performAction(actionName: string): Promise<BiomeState> {
-  if (!isTauriRuntime()) return mockPerformAction(actionName);
-  return realInvoke("perform_action", { actionName });
 }
 
 export function updateTrayTitle(title: string | null): Promise<void> {

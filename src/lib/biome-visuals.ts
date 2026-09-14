@@ -26,14 +26,3 @@ export function getStageInfo(stage: number): StageInfo {
   const index = Math.min(Math.max(stage, 0), STAGE_INFO.length - 1);
   return STAGE_INFO[index];
 }
-
-export const ACTION_LABELS: Record<string, string> = {
-  plant_seed: "Plant a Seed",
-  water_plant: "Water the Plant",
-  add_nutrients: "Add Nutrients",
-  tend_ecosystem: "Tend the Ecosystem",
-};
-
-export function getActionLabel(actionName: string): string {
-  return ACTION_LABELS[actionName] ?? actionName;
-}
